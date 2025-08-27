@@ -2,40 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Contact Form</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Contact Us</h1>
-  <form id="contactForm">
+  
+<form id="connect" action="/submit" method="POST">
+
+  <!-- First full-screen section -->
+  <div class="section section--first">
+    <h1>Now before anything, enter your name</h1>
     <input type="text" name="name" placeholder="Your Name" required />
-    <input type="email" name="email" placeholder="Your Email" required />
-    <textarea name="message" placeholder="Your Message" required></textarea>
+  </div>
+
+  <!-- Second full-screen section -->
+  <div class="section section--second">
+    <h1>Let's get to know each other!</h1>
+    <p>Answer the following questions to help us connect better.</p>
+    <p>Feel free to skip any question you don't want to answer.</p>
+
+    <label for="Question1">Question #1</label>
+    <select name="Question1" id="Question1">
+      <option value="">Select one of the following</option>
+      <option value="Q1_1">What's the last show/movie you really enjoyed?</option>
+      <option value="Q1_2">Are you more of a morning person or night owl?</option>
+      <option value="Q1_3">If you could instantly be fluent in any language, which would you pick?</option>
+      <option value="Q1_4">What's something you've been into lately?</option>
+    </select>
+    <input type="text" name="Answer_one" placeholder="Answer to question above"/>
+
+    <label for="Question2">Question #2</label>
+    <select name="Question2" id="Question2">
+      <option value="">Select one of the following</option>
+      <option value="Q2_1">What's something you're proud of that not many people know about?</option>
+      <option value="Q2_2">What's a goal you're working on right now?</option>
+      <option value="Q2_3">What's something you used to believe but since changed your mind about?</option>
+      <option value="Q2_4">What kind of things make you feel most at peace?</option>
+    </select>
+    <input type="text" name="Answer_two" placeholder="Answer to question above"/>
+
+    <label for="Question3">Question #3</label>
+    <select name="Question3" id="Question3">
+      <option value="">Select one of the following</option>
+      <option value="Q3_1">What does success mean to you?</option>
+      <option value="Q3_2">Do you think people are generally more good or more selfish?</option>
+      <option value="Q3_3">What's a fear you've worked through (or are still working through)?</option>
+      <option value="Q3_4">If you could relive one year of your life, would you? Why or why not?</option>
+    </select>
+    <input type="text" name="Answer_three" placeholder="Answer to question above"/>
+
+    <label for="Question4">Question #4</label>
+    <select name="Question4" id="Question4">
+      <option value="">Select one of the following</option>
+      <option value="Q4_1">If your life was a movie what genre would it be?</option>
+      <option value="Q4_2">What would your younger self be surprised to know about you now?</option>
+      <option value="Q4_3">What's a hill you'll always die on?</option>
+      <option value="Q4_4">What's a weird or useless talent you have?</option>
+    </select>
+    <input type="text" name="Answer_four"  placeholder="Answer to question above"/>
+
+    <p>If you have any comments to make, please send them below:</p>
+    <textarea name="message" placeholder="Your message here..." rows="4" cols="50"></textarea>
+
     <button type="submit">Send</button>
-  </form>
+  </div>
+</form>
 
-  <script>
-    document.getElementById("contactForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+<script src="script.js"></script>
+<script>
+  document.getElementById("connect").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      const formData = {
-        name: e.target.name.value,
-        email: e.target.email.value,
-        message: e.target.message.value,
-      };
+    const formData = {
+      question1: e.target.Question1.value,
+      answer1: e.target.Answer_one.value,
+      question2: e.target.Question2.value,
+      answer2: e.target.Answer_two.value,
+      question3: e.target.Question3.value,
+      answer3: e.target.Answer_three.value,
+      question4: e.target.Question4.value,
+      answer4: e.target.Answer_four.value,
+      name: e.target.name.value,
+      message: e.target.message.value
+    };
 
-      const response = await fetch("/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-      alert(result.message);
+    const response = await fetch("/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     });
-  </script>
+
+    const result = await response.json();
+    alert(result.message);
+  });
+</script>
 </body>
 </html>

@@ -1,16 +1,15 @@
 // server.js
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
@@ -22,30 +21,33 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('✅ Connected to MongoDB'))
 .catch((err) => console.error('❌ MongoDB error:', err));
 
-// MongoDB Schema
-const messageSchema = new mongoose.Schema({
-  name: String,
-  email: String,
-  message: String,
-  date: { type: Date, default: Date.now }
-});
+// Flexible Schema (accepts ANY fields)
+const messageSchema = new mongoose.Schema({}, { strict: false });
 const Message = mongoose.model('Message', messageSchema);
 
 // Nodemailer Setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,       // Your Gmail address
-    pass: process.env.EMAIL_PASS        // Gmail App Password
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
+// Helper function to safely display values
+const safe = (value) => {
+  if (value === undefined || value === null || String(value).trim() === "") {
+    return "No answer provided";
+  }
+  return String(value).trim();
+};
+
 // Form Submission Route
 app.post('/submit', async (req, res) => {
-  const { name, email, message } = req.body;
+  console.log('📩 Received form data:', req.body);
 
-  // Save to MongoDB
-  const newMessage = new Message({ name, email, message });
+  // Save all fields to DB
+  const newMessage = new Message(req.body);
   try {
     await newMessage.save();
     console.log('✅ Message saved to DB');
@@ -54,12 +56,25 @@ app.post('/submit', async (req, res) => {
     return res.status(500).send('Database error');
   }
 
-  // Send Email Notification
+  // Create HTML table from form data (safe values)
+  const emailHTML = `
+    <h2>New Form Submission</h2>
+    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; font-family: Arial; font-size: 14px;">
+      ${Object.entries(req.body).map(([key, value]) => `
+        <tr>
+          <td style="font-weight: bold; background: #f4f4f4;">${safe(key)}</td>
+          <td>${safe(value)}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
+
+  // Send HTML email
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: process.env.EMAIL_USER, // send to yourself
-    subject: `New message from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+    to: process.env.EMAIL_USER,
+    subject: `New form submission from ${safe(req.body.name)}`,
+    html: emailHTML
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -77,3 +92,4 @@ app.post('/submit', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
+// script.js
