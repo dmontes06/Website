@@ -1,5 +1,6 @@
 // server.js
 require('dotenv').config();
+console.log("MONGO_URI:", process.env.MONGO_URI);
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
