@@ -1,7 +1,7 @@
 /* Reset */
 * {
   margin: 0;
-  padding: 0 ;
+  padding: 10 ;
   box-sizing: border-box;
 }
 
@@ -52,7 +52,7 @@ html, body {
   color: #333;
   background: linear-gradient(120deg, #F9C5D5, #FBC4AB, #FF8FA3, #F0FDF4, #FAE1DD);
   background-size: 300% 300%;
-  animation: meltColors 12s ease infinite;
+  animation: meltColors 15s ease infinite;
 }
 
 form {
@@ -90,6 +90,7 @@ form {
   opacity: 1;
 }
 
+
 /* Style for text inputs */
 input[type="text"],
 input[type="email"],
@@ -113,4 +114,20 @@ textarea {
   border-radius: 8px;
   font-size: 16px;
   resize: vertical;    /* let users expand vertically */
+}
+
+button[type="submit"] {
+  background-color: #FF8FA3;   /* light coral */
+  color: #fff;                 /* white text */
+  padding: 12px 32px;          /* size */
+  border: none;                /* remove border */
+  border-radius: 8px;          /* rounded corners */
+  font-size: 18px;             /* larger text */
+  cursor: pointer;             /* pointer on hover */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #FBC4AB;   /* peach on hover */
 }
