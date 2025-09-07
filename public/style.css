@@ -1,7 +1,6 @@
 /* Reset */
 * {
   margin: 0;
-  padding: 10 ;
   box-sizing: border-box;
 }
 
@@ -25,7 +24,7 @@ html, body {
     #F0FDF4,  /* mint cream */
     #FAE1DD   /* warm beige */
   );
-  background-size: 300% 300%;
+  background-size: 200% 200%;
   animation: meltColors 15s ease infinite;
   color: #333;
 }
@@ -43,9 +42,8 @@ html, body {
   flex-direction: column;
   justify-content: center;   /* vertical center */
   align-items: center;       /* horizontal center */
-  min-width: 1400px; /* ensure sections are at least 1400px wide */
+  min-width: auto; /* ensure sections are at least 1400px wide */
   width: 100%;
-  padding: 200px 150px;
   text-align: center;
   transition: opacity 0.8s ease;
   border-radius: 0;
@@ -61,7 +59,7 @@ form {
   align-items: center;
   justify-content: center;    /* center form elements within form */
   width: 100%;
-  margin: 0 auto;
+  margin: 0 auto;  
   background: rgba(255, 255, 255, 0.2); /* optional: slightly transparent form background */
   border-radius: 50px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -72,7 +70,8 @@ form {
   color: #333;
   opacity: 1;
   z-index: 2;
-  padding-top: 150vh; /* more padding for the first section */
+  padding-bottom: 50ch; /* more padding for the first section */
+  padding-top: 125vh;
 }
 
 .section--second {
